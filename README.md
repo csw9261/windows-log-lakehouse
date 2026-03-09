@@ -42,7 +42,7 @@ React Frontend
 | 레이어 | 기술 |
 |---|---|
 | 수집 | Python, pywin32, psutil, watchdog, kafka-python |
-| 메시징 | Apache Kafka, Zookeeper |
+| 메시징 | Apache Kafka (KRaft 모드) |
 | 저장소 | MinIO (S3 호환), Apache Iceberg, Hive Metastore |
 | 쿼리 | Trino |
 | API | Node.js, Express.js |
