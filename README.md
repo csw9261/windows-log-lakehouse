@@ -43,7 +43,7 @@ React Frontend
 |---|---|
 | 수집 | Python, pywin32, psutil, watchdog, kafka-python |
 | 메시징 | Apache Kafka (KRaft 모드) |
-| 저장소 | MinIO (S3 호환), Apache Iceberg, Hive Metastore |
+| 저장소 | MinIO (S3 호환), Apache Iceberg, Hive Metastore, PostgreSQL |
 | 쿼리 | Trino |
 | API | Node.js, Express.js |
 | 프론트엔드 | React |
@@ -86,13 +86,26 @@ windows-log-lakehouse/
 
 ## 실행 방법
 
-### 1. 인프라 실행
+### 1. 환경 변수 설정
+
+`.env` 파일에 WSL IP를 설정합니다. WSL IP는 재시작마다 바뀔 수 있으므로 매번 확인 후 업데이트합니다.
+
+```bash
+ip addr show eth0 | grep "inet "
+```
+
+`.env`:
+```
+WSL_HOST=172.27.242.219
+```
+
+### 2. 인프라 실행
 
 ```bash
 docker-compose up -d
 ```
 
-### 2. Consumer 서버 실행
+### 3. Consumer 서버 실행
 
 ```bash
 cd consumer
@@ -100,7 +113,7 @@ pip install -r requirements.txt
 python consumer.py
 ```
 
-### 3. Windows Agent 실행 (Windows 환경 필요)
+### 4. Windows Agent 실행 (Windows 환경 필요)
 
 ```bash
 cd agent
@@ -108,7 +121,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-### 4. API 서버 실행
+### 5. API 서버 실행
 
 ```bash
 cd api
@@ -116,7 +129,7 @@ npm install
 node src/index.js
 ```
 
-### 5. 프론트엔드 실행
+### 6. 프론트엔드 실행
 
 ```bash
 cd frontend
@@ -129,7 +142,7 @@ npm start
 인프라 실행 후 Trino CLI로 데이터 적재 여부 확인:
 
 ```sql
-SELECT * FROM iceberg.warehouse.system_metrics LIMIT 10;
+SELECT * FROM iceberg.windows_logs.system_metrics LIMIT 10;
 ```
 
 ## 서비스 포트
@@ -139,6 +152,7 @@ SELECT * FROM iceberg.warehouse.system_metrics LIMIT 10;
 | Kafka | 9092 |
 | MinIO Console | 9001 |
 | MinIO API | 9000 |
+| PostgreSQL | 5432 |
 | Hive Metastore | 9083 |
 | Trino | 8080 |
 | API 서버 | 3000 |
