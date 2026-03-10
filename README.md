@@ -84,6 +84,43 @@ windows-log-lakehouse/
 └── docker-compose.yml
 ```
 
+## 인프라 설정 파일
+
+### infra/hive-config/hive-site.xml
+
+Hive Metastore가 MinIO를 S3 스토리지로 바라보기 위한 설정.
+
+| 항목 | 설명 |
+|---|---|
+| `hive.metastore.warehouse.dir` | Iceberg 웨어하우스 경로 (`s3a://windows-logs/warehouse`) |
+| `fs.s3a.endpoint` | MinIO 엔드포인트 (`http://minio:9000`) |
+| `fs.s3a.path.style.access` | MinIO는 path-style 접근 사용 |
+
+### infra/trino/config.properties
+
+Trino 서버 기본 설정. 단일 노드(coordinator가 worker 역할 겸임)로 실행.
+
+| 항목 | 설명 |
+|---|---|
+| `coordinator=true` | 이 노드가 coordinator 역할 수행 |
+| `node-scheduler.include-coordinator=true` | coordinator가 worker도 겸함 (별도 worker 없음) |
+| `http-server.http.port` | Trino UI 및 API 포트 (8080) |
+
+### infra/trino/jvm.config
+
+Trino JVM 설정. 힙 메모리는 2GB로 설정.
+
+### infra/trino/catalog/iceberg.properties
+
+Trino가 Iceberg 테이블을 조회하기 위한 카탈로그 설정.
+
+| 항목 | 설명 |
+|---|---|
+| `iceberg.catalog.type` | Hive Metastore를 카탈로그로 사용 |
+| `hive.metastore.uri` | Hive Metastore Thrift 주소 |
+| `hive.s3.endpoint` | MinIO 엔드포인트 |
+| `hive.s3.path-style-access` | MinIO path-style 접근 활성화 |
+
 ## 실행 방법
 
 ### 1. 환경 변수 설정
