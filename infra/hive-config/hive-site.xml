@@ -1,0 +1,41 @@
+<configuration>
+  <!-- Hive Metastore Thrift 서버 URI -->
+  <property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://hive-metastore:9083</value>
+  </property>
+
+  <!-- Iceberg 웨어하우스 경로 (MinIO S3 버킷) -->
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>s3a://windows-logs/warehouse</value>
+  </property>
+
+  <!-- S3A 파일시스템 구현체 (MinIO S3 호환) -->
+  <property>
+    <name>fs.s3a.impl</name>
+    <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+  </property>
+
+  <!-- MinIO 접속 정보 -->
+  <property>
+    <name>fs.s3a.access.key</name>
+    <value>minioadmin</value>
+  </property>
+  <property>
+    <name>fs.s3a.secret.key</name>
+    <value>minioadmin</value>
+  </property>
+
+  <!-- MinIO 엔드포인트 (AWS S3 대신 로컬 MinIO 사용) -->
+  <property>
+    <name>fs.s3a.endpoint</name>
+    <value>http://minio:9000</value>
+  </property>
+
+  <!-- MinIO는 path-style 접근 사용 (virtual-hosted-style 미지원) -->
+  <property>
+    <name>fs.s3a.path.style.access</name>
+    <value>true</value>
+  </property>
+</configuration>
